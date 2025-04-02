@@ -110,9 +110,26 @@ class MainActivity : AppCompatActivity(), AmbientModeSupport.AmbientCallbackProv
         }
     }
 
-    override fun onDataChanged(p0: DataEventBuffer) {
-        // Handle data changes (empty for now)
+    override fun onDataChanged(dataEvents: DataEventBuffer) {
+        for (event in dataEvents) {
+            if (event.type == DataEvent.TYPE_CHANGED) {
+                val dataItem = event.dataItem
+                if (dataItem.uri.path == "/alarm_interval") {
+                    val dataMap = DataMapItem.fromDataItem(dataItem).dataMap
+                    val interval = dataMap.getLong("interval", -1L)
+
+                    Log.d(TAG_MESSAGE_RECEIVED, "Received Alarm Interval: $interval")
+
+                    if (interval != -1L) {
+                        messageLog += "\nReceived Alarm Interval: $interval"
+                    } else {
+                        Log.e(TAG_MESSAGE_RECEIVED, "Invalid interval received!")
+                    }
+                }
+            }
+        }
     }
+
 
     override fun onCapabilityChanged(p0: CapabilityInfo) {
         // Handle capability changes (empty for now)
@@ -188,11 +205,16 @@ class MainActivity : AppCompatActivity(), AmbientModeSupport.AmbientCallbackProv
         try {
             Wearable.getDataClient(activityContext!!).addListener(this)
             Wearable.getMessageClient(activityContext!!).addListener(this)
-            Wearable.getCapabilityClient(activityContext!!).addListener(this, Uri.parse("wear://"), CapabilityClient.FILTER_REACHABLE)
+            Wearable.getCapabilityClient(activityContext!!).addListener(
+                this,
+                Uri.parse("wear://"),
+                CapabilityClient.FILTER_REACHABLE
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
 
     override fun getAmbientCallback(): AmbientCallback = MyAmbientCallback()
 

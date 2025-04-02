@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wear Companion</string>
+    <string name="app_name">UAC Companion</string>
     <string name="hello_world">Hello Square World!</string>
     <string name="mobile_device_is_connected">Mobile device not paired</string>
     <string name="mobile_message">Mobile message</string>
