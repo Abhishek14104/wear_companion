@@ -42,3 +42,5 @@ You will be needing two repos in total in order to test this app as this is the 
 
 3. Run on any Wear OS device or emulator
 
+
+**Before testing make sure that your Android Device is connected to the WearOS Watch properly.**
